@@ -1,4 +1,6 @@
-﻿namespace Payment.Business.Dtos
+﻿using Payment.Business.Models;
+
+namespace Payment.Business.Dtos
 {
     public record  OrderDto
     {
