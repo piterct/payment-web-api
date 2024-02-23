@@ -2,7 +2,7 @@
 
 namespace Payment.Api
 {
-    public class Startup
+    public class Startup: IStartupProject
     {
         public Startup(IConfiguration configuration)
         {
@@ -16,7 +16,7 @@ namespace Payment.Api
            
         }
 
-        public void Configure(WebApplication app, IWebHostEnvironment enviroment, IApiVersionDescriptionProvider provider)
+        public void Configure(WebApplication app, IWebHostEnvironment environment, IApiVersionDescriptionProvider provider)
         {
            
         }
@@ -26,7 +26,7 @@ namespace Payment.Api
     public interface IStartupProject
     {
         IConfiguration Configuration { get; }
-        void Configure(WebApplication app, IWebHostEnvironment enviroment, IApiVersionDescriptionProvider provider);
+        void Configure(WebApplication app, IWebHostEnvironment environment, IApiVersionDescriptionProvider provider);
         void ConfigureServices(IServiceCollection services);
     }
 }
