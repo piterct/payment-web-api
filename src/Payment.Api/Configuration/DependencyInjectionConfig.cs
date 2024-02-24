@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
-using static Payment.Api.Configuration.SwaggerConfig.SwaggerDefaultValues;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Payment.Business.Interfaces.Services;
-using Payment.Business.Services;
 using Payment.Business.Interfaces.Notifications;
+using Payment.Business.Interfaces.Repositories;
+using Payment.Business.Interfaces.Services;
 using Payment.Business.Notifications;
+using Payment.Business.Services;
+using Payment.Data.Repositories;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using static Payment.Api.Configuration.SwaggerConfig.SwaggerDefaultValues;
 
 namespace Payment.Api.Configuration
 {
@@ -22,6 +24,10 @@ namespace Payment.Api.Configuration
 
             #region Notification
             services.AddScoped<INotifier, Notifier>();
+            #endregion
+
+            #region Repositories
+            services.AddScoped<ISellerRepository, SellerRepository>();
             #endregion
 
             return services;
