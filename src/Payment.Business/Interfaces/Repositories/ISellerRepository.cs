@@ -1,6 +1,8 @@
-﻿namespace Payment.Business.Interfaces.Repositories
+﻿using Payment.Business.Models;
+
+namespace Payment.Business.Interfaces.Repositories
 {
-    public interface  ISellerRepository
+    public interface  ISellerRepository : IRepository<Seller>
     {
     }
 }
