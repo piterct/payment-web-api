@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\V1\" />
+    <ProjectReference Include="..\Payment.Business\Payment.Business.csproj" />
+    <ProjectReference Include="..\Payment.Data\Payment.Data.csproj" />
   </ItemGroup>
 
 </Project>
