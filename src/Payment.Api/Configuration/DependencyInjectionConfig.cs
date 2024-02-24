@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Payment.Business.Interfaces.Notifications;
+using Payment.Business.Interfaces.Queries;
 using Payment.Business.Interfaces.Repositories;
 using Payment.Business.Interfaces.Services;
 using Payment.Business.Notifications;
+using Payment.Business.Queries;
 using Payment.Business.Services;
 using Payment.Data.Repositories;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -28,6 +30,11 @@ namespace Payment.Api.Configuration
 
             #region Repositories
             services.AddScoped<ISellerRepository, SellerRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            #endregion
+
+            #region Queries
+            services.AddScoped<IOrderQuery, OrderQuery>();
             #endregion
 
             return services;
