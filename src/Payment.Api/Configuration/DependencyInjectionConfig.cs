@@ -22,6 +22,7 @@ namespace Payment.Api.Configuration
 
             #region Services
             services.AddScoped<ISellerService, SellerService>();
+            services.AddScoped<IOrderService, OrderService>();
             #endregion
 
             #region Notification
