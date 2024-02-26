@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Payment.Business.Models;
 
 namespace Payment.Data.Contexts
 {
     public class PaymentDbContext : DbContext
     {
         public PaymentDbContext(DbContextOptions<PaymentDbContext> options) : base(options) { }
+
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
