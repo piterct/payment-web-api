@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using Payment.Api.Configuration;
 using Payment.Data.Contexts;
 
