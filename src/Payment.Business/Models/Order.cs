@@ -1,4 +1,4 @@
-﻿using Payment.Business.Enum;
+﻿using Payment.Business.Enums;
 
 namespace Payment.Business.Models
 {
