@@ -1,4 +1,4 @@
-﻿using Payment.Business.Helper;
+﻿using Payment.Business.Helpers;
 
 namespace Payment.Business.Validations.Documents
 {
