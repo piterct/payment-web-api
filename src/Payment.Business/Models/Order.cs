@@ -4,8 +4,8 @@ namespace Payment.Business.Models
 {
     public class Order : Entity
     {
+        private List<OrderItem> _orderItems;
         public Guid SellerId { get; private set; }
-        public List<OrderItem> _orderItems { get; private set; }
         public EOrderStatus Status { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
         public DateTime Date { get; private set; }
@@ -52,6 +52,45 @@ namespace Payment.Business.Models
                 order.SetAwaitingPayment();
                 return order;
             }
+        }
+
+        public bool IsStatusUpdateAllowed(EOrderStatus newStatus)
+        {
+            switch (Status)
+            {
+                case EOrderStatus.AwaitingPayment:
+                    return IsStatusAwaitingPaymentUpdateAllowed(newStatus);
+                case EOrderStatus.Approved:
+                    return IsStatusApprovedUpdateAllowed(newStatus);
+                case EOrderStatus.Shipped:
+                    return IsStatusShippedAllowed(newStatus);
+                default:
+                    return false;
+            }
+        }
+
+        public bool IsStatusAwaitingPaymentUpdateAllowed(EOrderStatus newStatus)
+        {
+            if (newStatus == EOrderStatus.Approved || newStatus == EOrderStatus.Cancelled)
+                return true;
+
+            return false;
+        }
+
+        public bool IsStatusApprovedUpdateAllowed(EOrderStatus newStatus)
+        {
+            if (newStatus == EOrderStatus.Shipped || newStatus == EOrderStatus.Cancelled)
+                return true;
+
+            return false;
+        }
+
+        public bool IsStatusShippedAllowed(EOrderStatus newStatus)
+        {
+            if (newStatus == EOrderStatus.Delivered)
+                return true;
+
+            return false;
         }
     }
 }
