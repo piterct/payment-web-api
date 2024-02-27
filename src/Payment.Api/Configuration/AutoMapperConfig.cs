@@ -13,12 +13,14 @@ namespace Payment.Api.Configuration
             CreateMap<Seller, SellerRequest>().ReverseMap();
             CreateMap<OrderItem, OrderItemRequest>().ReverseMap();
             CreateMap<OrderRequest, Order>()
-                .ForMember(dest => dest._orderItems, opt => opt.MapFrom(src => src.Items));
+                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items));
 
             #endregion
 
             #region Dtos
             CreateMap<OrderItemDto, OrderItem>().ReverseMap();
+            CreateMap<OrderItemDto, OrderItemRequest>().ReverseMap();
+            CreateMap<OrderDto, OrderRequest>().ReverseMap();
             #endregion 
         }
     }
