@@ -1,4 +1,5 @@
-﻿using Payment.Business.Dtos;
+﻿using AutoMapper;
+using Payment.Business.Dtos;
 using Payment.Business.Enums;
 using Payment.Business.Interfaces.Notifications;
 using Payment.Business.Interfaces.Queries;
@@ -14,18 +15,22 @@ namespace Payment.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderQuery _orderQuery;
+        private readonly IMapper _mapper;
 
-        public OrderService(INotifier notifier, IOrderRepository orderRepository, IOrderQuery orderQuery) : base(notifier)
+        public OrderService(INotifier notifier, IOrderRepository orderRepository, IOrderQuery orderQuery, IMapper mapper) : base(notifier)
         {
             _orderRepository = orderRepository;
             _orderQuery = orderQuery;
+            _mapper = mapper;
         }
 
-        public async Task<NewOrderDto> Add(Order order)
+        public async Task<NewOrderDto> Add(OrderDto order)
         {
-            var newOrder = OrderFactory.NewOrder(order.SellerId);
+            var newOrder = OrderFactory.NewOrder(order.Seller.Id);
 
-            newOrder.AddOrderItems(order._orderItems);
+            var items =  _mapper.Map<List<OrderItem>>(order.Items);
+
+            newOrder.AddOrderItems(items);
 
             if (!RunValidation(new OrderValidation(), newOrder)) return new NewOrderDto();
 
@@ -36,7 +41,7 @@ namespace Payment.Business.Services
 
         public async Task<OrderDto> UpdateOrderStatus(Order order, EOrderStatus newStatus)
         {
-            if (IsStatusUpdateAllowed(order.Status, newStatus))
+            if (order.IsStatusUpdateAllowed(newStatus))
             {
                 order.UpdateOrderStatus(newStatus);
                 await _orderRepository.Update(order);
@@ -47,45 +52,6 @@ namespace Payment.Business.Services
                 Notify(string.Concat("It's not allowed to update the order status from ", order.Status.ToString(), " to ", newStatus.ToString()));
                 return new OrderDto();
             }
-        }
-
-        private bool IsStatusUpdateAllowed(EOrderStatus currentStatus, EOrderStatus newStatus)
-        {
-            switch (currentStatus)
-            {
-                case EOrderStatus.AwaitingPayment:
-                    return IsStatusAwaitingPaymentUpdateAllowed(newStatus);
-                case EOrderStatus.Approved:
-                    return IsStatusApprovedUpdateAllowed(newStatus);
-                case EOrderStatus.Shipped:
-                    return IsStatusShippedAllowed(newStatus);
-                default:
-                    return false;
-            }
-        }
-
-        private bool IsStatusAwaitingPaymentUpdateAllowed(EOrderStatus newStatus)
-        {
-            if (newStatus == EOrderStatus.Approved || newStatus == EOrderStatus.Cancelled)
-                return true;
-
-            return false;
-        }
-
-        private bool IsStatusApprovedUpdateAllowed(EOrderStatus newStatus)
-        {
-            if (newStatus == EOrderStatus.Shipped || newStatus == EOrderStatus.Cancelled)
-                return true;
-
-            return false;
-        }
-
-        private bool IsStatusShippedAllowed(EOrderStatus newStatus)
-        {
-            if (newStatus == EOrderStatus.Delivered)
-                return true;
-
-            return false;
         }
     }
 }
