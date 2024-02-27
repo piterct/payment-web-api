@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Payment.Api.ViewModels;
+using Payment.Business.Dtos;
 using Payment.Business.Enums;
 using Payment.Business.Interfaces.Notifications;
 using Payment.Business.Interfaces.Queries;
@@ -60,7 +61,7 @@ namespace Payment.Api.Controllers.V1
                 return CustomResponseNotFound();
             }
 
-            var newOrder = await _orderService.Add(_mapper.Map<Order>(orderRequest));
+            var newOrder = await _orderService.Add(_mapper.Map<OrderDto>(orderRequest));
             return CustomResponse(newOrder);
         }
 
