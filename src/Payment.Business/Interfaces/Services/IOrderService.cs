@@ -6,7 +6,7 @@ namespace Payment.Business.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task<NewOrderDto> Add(Order order);
+        Task<NewOrderDto> Add(OrderDto order);
         Task<OrderDto> UpdateOrderStatus(Order order, EOrderStatus newStatus);
     }
 }
