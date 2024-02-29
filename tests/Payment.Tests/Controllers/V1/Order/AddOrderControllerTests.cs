@@ -4,6 +4,7 @@ using Moq;
 using Moq.AutoMock;
 using Payment.Api.Controllers.V1;
 using Payment.Api.ViewModels;
+using Payment.Business.Dtos;
 using Payment.Business.Interfaces.Notifications;
 using Payment.Business.Interfaces.Repositories;
 using Payment.Business.Interfaces.Services;
@@ -49,7 +50,7 @@ namespace Payment.Tests.Controllers.V1.Order
             Assert.True(isValid);
             Assert.Equal(200, statusCodeResult.StatusCode);
             _mocker.GetMock<ISellerRepository>().Verify(s => s.GetById(It.IsAny<Guid>()), Times.Once());
-            _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<Business.Models.Order>()), Times.Once());
+            _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<OrderDto>()), Times.Once());
         }
 
         [Fact(DisplayName = "Add order seller not found ")]
@@ -70,7 +71,7 @@ namespace Payment.Tests.Controllers.V1.Order
             Assert.True(isValid);
             Assert.Equal(404, statusCodeResult.StatusCode);
             _mocker.GetMock<ISellerRepository>().Verify(s => s.GetById(It.IsAny<Guid>()), Times.Once());
-            _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<Business.Models.Order>()), Times.Never());
+            _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<OrderDto>()), Times.Never());
         }
     }
 }
