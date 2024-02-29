@@ -4,11 +4,11 @@ namespace Payment.Business.Models
 {
     public class Order : Entity
     {
-        private List<OrderItem> _orderItems;
         public Guid SellerId { get; private set; }
         public EOrderStatus Status { get; private set; }
-        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
         public DateTime Date { get; private set; }
+        private readonly List<OrderItem> _orderItems;
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         public Order()
         {
@@ -69,7 +69,7 @@ namespace Payment.Business.Models
             }
         }
 
-        public bool IsStatusAwaitingPaymentUpdateAllowed(EOrderStatus newStatus)
+        public static bool IsStatusAwaitingPaymentUpdateAllowed(EOrderStatus newStatus)
         {
             if (newStatus == EOrderStatus.Approved || newStatus == EOrderStatus.Cancelled)
                 return true;
@@ -77,7 +77,7 @@ namespace Payment.Business.Models
             return false;
         }
 
-        public bool IsStatusApprovedUpdateAllowed(EOrderStatus newStatus)
+        public static bool IsStatusApprovedUpdateAllowed(EOrderStatus newStatus)
         {
             if (newStatus == EOrderStatus.Shipped || newStatus == EOrderStatus.Cancelled)
                 return true;
@@ -85,7 +85,7 @@ namespace Payment.Business.Models
             return false;
         }
 
-        public bool IsStatusShippedAllowed(EOrderStatus newStatus)
+        public static bool IsStatusShippedAllowed(EOrderStatus newStatus)
         {
             if (newStatus == EOrderStatus.Delivered)
                 return true;
