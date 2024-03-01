@@ -16,8 +16,6 @@ namespace Payment.Tests.Controllers.V1.Order
     {
         private readonly AutoMocker _mocker;
         private readonly OrderController _orderController;
-        private readonly Guid _orderId;
-        private readonly Guid _emptyOrderId;
         private readonly Guid _sellerId;
         private readonly Business.Models.Seller _seller;
         private readonly List<ValidationResult> _validationResults;
@@ -26,8 +24,6 @@ namespace Payment.Tests.Controllers.V1.Order
         {
             _mocker = new AutoMocker();
             _orderController = _mocker.CreateInstance<OrderController>();
-            _orderId = Guid.NewGuid();
-            _emptyOrderId = Guid.Empty;
             _sellerId = Guid.NewGuid();
             _seller = new Business.Models.Seller(_sellerId, "042.593.100-54", "Jhon Perez", "tests.tests@gmail.com", "123456789");
             _validationResults = new List<ValidationResult>();
