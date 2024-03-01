@@ -28,7 +28,7 @@ namespace Payment.Business.Services
         {
             var newOrder = OrderFactory.NewOrder(order.Seller.Id);
 
-            var items =  _mapper.Map<List<OrderItem>>(order.Items);
+            var items = _mapper.Map<List<OrderItem>>(order.Items);
 
             newOrder.AddOrderItems(items);
 
@@ -45,6 +45,7 @@ namespace Payment.Business.Services
             {
                 order.UpdateOrderStatus(newStatus);
                 await _orderRepository.Update(order);
+                await _orderRepository.UnitOfWork.Commit();
                 return await _orderQuery.GetById(order.Id);
             }
             else
@@ -53,6 +54,6 @@ namespace Payment.Business.Services
                 return new OrderDto();
             }
         }
-        
+
     }
 }
