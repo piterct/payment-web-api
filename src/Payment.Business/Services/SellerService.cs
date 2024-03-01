@@ -27,7 +27,7 @@ namespace Payment.Business.Services
 
             await _sellerRepository.Add(seller);
 
-            return true;
+            return await _sellerRepository.UnitOfWork.Commit();
         }
     }
 }
