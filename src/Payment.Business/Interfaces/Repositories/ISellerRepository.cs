@@ -1,4 +1,5 @@
-﻿using Payment.Business.Models;
+﻿using Payment.Business.Interfaces.Data;
+using Payment.Business.Models;
 
 namespace Payment.Business.Interfaces.Repositories
 {
