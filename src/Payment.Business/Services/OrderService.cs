@@ -36,6 +36,8 @@ namespace Payment.Business.Services
 
             await _orderRepository.Add(newOrder);
 
+            await _orderRepository.UnitOfWork.Commit();
+
             return new NewOrderDto(newOrder.Id);
         }
 
