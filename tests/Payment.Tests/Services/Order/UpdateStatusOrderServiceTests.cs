@@ -13,15 +13,13 @@ namespace Payment.Tests.Services.Order
     {
         private readonly AutoMocker _mocker;
         private readonly OrderService _orderService;
-        private readonly Guid _orderId;
         private readonly Business.Models.Order _order;
 
         public UpdateStatusOrderServiceTests()
         {
             _mocker = new AutoMocker();
             _orderService = _mocker.CreateInstance<OrderService>();
-            _orderId = Guid.NewGuid();
-            _order = Business.Models.Order.OrderFactory.NewOrder(_orderId);
+            _order = Business.Models.Order.OrderFactory.NewOrder(Guid.NewGuid());
             var orderItem = new OrderItem("Bike");
             orderItem.AssociateOrder(_order.Id);
             _order.AddOrderItems(orderItem);
