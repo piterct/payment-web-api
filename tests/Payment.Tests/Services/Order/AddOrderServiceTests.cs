@@ -38,6 +38,7 @@ namespace Payment.Tests.Services.Order
             var orderDto = new OrderDto(_orderId, EOrderStatus.Cancelled.ToString(), DateTime.Now, _emptyListOrderItemDto, _emptySeller);
             _mocker.GetMock<IMapper>().Setup(m =>
                 m.Map<List<OrderItem>>(It.IsAny<List<OrderItemDto>>())).Returns(_listOrderItem);
+            _mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).ReturnsAsync(true);
 
             // Act
             var orderService = await _orderService.Add(orderDto);
@@ -45,6 +46,7 @@ namespace Payment.Tests.Services.Order
             // Assert 
             Assert.NotEqual(orderService.OrderId, orderDto.OrderId);
             _mocker.GetMock<IOrderRepository>().Verify(s => s.Add(It.IsAny<Business.Models.Order>()), Times.Once());
+            _mocker.GetMock<IOrderRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once());
         }
 
         [Fact(DisplayName = "Add new invalid order without items")]
