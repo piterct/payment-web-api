@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Payment.Business.Interfaces.Repositories;
+using Payment.Business.Interfaces.Data;
 using Payment.Business.Models;
 using Payment.Data.Contexts;
 using System.Linq.Expressions;
@@ -16,6 +16,8 @@ namespace Payment.Data.Repositories
             Db = db;
             DbSet = db.Set<TEntity>();
         }
+
+        public IUnitOfWork UnitOfWork => Db;
 
         public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
         {
@@ -34,20 +36,20 @@ namespace Payment.Data.Repositories
         public virtual async Task Add(TEntity entity)
         {
             DbSet.Add(entity);
-            await SaveChanges();
+            await Task.CompletedTask;
         }
 
         public virtual async Task Update(TEntity entity)
         {
             Db.Entry(entity).State = EntityState.Modified;
             DbSet.Update(entity);
-            await SaveChanges();
+            await Task.CompletedTask;
         }
 
         public virtual async Task Remove(Guid id)
         {
             DbSet.Remove(new TEntity { Id = id });
-            await SaveChanges();
+            await Task.CompletedTask;
         }
 
         public async Task<int> SaveChanges()
