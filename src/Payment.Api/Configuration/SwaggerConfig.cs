@@ -98,7 +98,7 @@ namespace Payment.Api.Configuration
                         Title = "API",
                         Version = description.ApiVersion.ToString(),
                         Description = "ASP.NET Core WebAPI.",
-                        Contact = new OpenApiContact() { Name = "Michael Peter", Email = "contato@webapi.io" },
+                        Contact = new OpenApiContact() { Name = "Michael Peter", Email = "michael_piterct@hotmail.com" },
                         License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
                     };
 
