@@ -68,7 +68,7 @@ namespace Payment.Api.Controllers.V1
         [HttpPut("{id:guid}/status/{orderStatus}")]
         public async Task<ActionResult> UpdateOrderStatus(Guid id, EOrderStatus orderStatus)
         {
-            var order = await _orderRepository.GetById(id);
+            var order = await _orderRepository.GetAllItemsById(id);
 
             if (order == null)
             {
