@@ -33,7 +33,7 @@ namespace Payment.Tests.Controllers.V1.Order
             var orderItem = new OrderItem("Bike");
             orderItem.AssociateOrder(order.Id);
             order.AddOrderItems(orderItem);
-            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetById(_orderId)).ReturnsAsync(await Task.FromResult(order));
+            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetAllItemsById(_orderId)).ReturnsAsync(await Task.FromResult(order));
 
             // Act
             var result = await _orderController.UpdateOrderStatus(_orderId, EOrderStatus.Approved);
@@ -41,7 +41,7 @@ namespace Payment.Tests.Controllers.V1.Order
             // Assert 
             var statusCodeResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(200, statusCodeResult.StatusCode);
-            _mocker.GetMock<IOrderRepository>().Verify(s => s.GetById(It.IsAny<Guid>()), Times.Once());
+            _mocker.GetMock<IOrderRepository>().Verify(s => s.GetAllItemsById(It.IsAny<Guid>()), Times.Once());
             _mocker.GetMock<IOrderService>().Verify(s => s.UpdateOrderStatus(It.IsAny<Business.Models.Order>(), EOrderStatus.Approved), Times.Once());
         }
 
