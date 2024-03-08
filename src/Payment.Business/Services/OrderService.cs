@@ -49,7 +49,6 @@ namespace Payment.Business.Services
             await _orderRepository.Update(order);
             await _orderRepository.UnitOfWork.Commit();
             return await _orderQuery.GetById(order.Id);
-
         }
 
     }
