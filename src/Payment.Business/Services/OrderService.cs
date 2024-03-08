@@ -43,18 +43,13 @@ namespace Payment.Business.Services
 
         public async Task<OrderDto> UpdateOrderStatus(Order order, EOrderStatus newStatus)
         {
-            if (order.IsStatusUpdateAllowed(newStatus))
-            {
-                order.UpdateOrderStatus(newStatus);
-                await _orderRepository.Update(order);
-                await _orderRepository.UnitOfWork.Commit();
-                return await _orderQuery.GetById(order.Id);
-            }
-            else
-            {
-                Notify(string.Concat("It's not allowed to update the order status from ", order.Status.ToString(), " to ", newStatus.ToString()));
-                return new OrderDto();
-            }
+            if (!RunValidation(new OrderValidation().UpdateStatusOrder(newStatus), order)) return new OrderDto();
+
+            order.UpdateOrderStatus(newStatus);
+            await _orderRepository.Update(order);
+            await _orderRepository.UnitOfWork.Commit();
+            return await _orderQuery.GetById(order.Id);
+
         }
 
     }
