@@ -39,9 +39,11 @@ namespace Payment.Tests.Queries.Order
             var newOrder = await _orderQuery.GetById(_orderId);
 
             // Assert 
+            _mocker.Verify();
             _mocker.GetMock<IOrderRepository>().Verify(r => r.GetAllItemsById(It.IsAny<Guid>()), Times.Once());
             _mocker.GetMock<ISellerRepository>().Verify(r => r.GetById(It.IsAny<Guid>()), Times.Once());
             Assert.Equal(_orderId, orderIdCalled);
+
         }
 
         [Fact(DisplayName = "Order not found by Id")]
