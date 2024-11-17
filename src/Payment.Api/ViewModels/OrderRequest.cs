@@ -5,9 +5,9 @@ namespace Payment.Api.ViewModels
 {
     public class OrderRequest
     {
-        public OrderRequest(string sellerID, List<OrderItemRequest> items)
+        public OrderRequest(string sellerId, List<OrderItemRequest> items)
         {
-            SellerId = sellerID;
+            SellerId = sellerId;
             Items = items;
         }
         [GuidValidation(ErrorMessage = "Invalid GUID format.")]
