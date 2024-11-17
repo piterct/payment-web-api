@@ -34,7 +34,7 @@ namespace Payment.Api.Controllers.V1
             _orderRepository = orderRepository;
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetById(Guid id)
         {
             var order = await _orderQuery.GetById(id);
@@ -65,7 +65,7 @@ namespace Payment.Api.Controllers.V1
             return CustomResponse(newOrder);
         }
 
-        [HttpPut("{id:guid}/status/{orderStatus}")]
+        [HttpPut("{id}/status/{orderStatus}")]
         public async Task<ActionResult> UpdateOrderStatus(Guid id, EOrderStatus orderStatus)
         {
             var order = await _orderRepository.GetAllItemsById(id);
