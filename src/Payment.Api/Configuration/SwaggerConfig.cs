@@ -70,10 +70,10 @@ namespace Payment.Api.Configuration
 
                     if (parameter.In != ParameterLocation.Path && parameter.Schema.Default == null)
                     {
-                        parameter.Schema.Default = new OpenApiString(routeInfo.DefaultValue.ToString());
+                        parameter.Schema.Default = new OpenApiString(routeInfo?.DefaultValue?.ToString());
                     }
 
-                    parameter.Required |= !routeInfo.IsOptional;
+                    if (routeInfo != null) parameter.Required |= !routeInfo.IsOptional;
                 }
             }
 
