@@ -14,6 +14,6 @@ namespace Payment.Api.ViewModels
         [Required(ErrorMessage = "The {0} field is mandatory")]
         public string SellerId { get; set; }
 
-        public List<OrderItemRequest> Items { get; set; } = new List<OrderItemRequest>();
+        public List<OrderItemRequest> Items { get; set; }
     }
 }
