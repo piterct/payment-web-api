@@ -58,10 +58,7 @@ namespace Payment.Api.Configuration
 
                     operation.Deprecated = OpenApiOperation.DeprecatedDefault;
 
-                    if (parameter.Description == null)
-                    {
-                        parameter.Description = description.ModelMetadata?.Description;
-                    }
+                    parameter.Description ??= description.ModelMetadata?.Description;
 
                     if (routeInfo == null)
                     {
