@@ -40,7 +40,7 @@ namespace Payment.Api.Controllers
             _notifier.Handle(new Notification(message));
         }
 
-        protected ActionResult CustomResponse(object result = null)
+        protected ActionResult CustomResponse(object? result = null)
         {
             if (ValidOperation())
             {
@@ -58,7 +58,7 @@ namespace Payment.Api.Controllers
             });
         }
 
-        protected ActionResult CustomResponseNotFound(object result = null)
+        protected ActionResult CustomResponseNotFound(object? result = null)
         {
             return NotFound(new
             {
