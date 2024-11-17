@@ -58,7 +58,7 @@ namespace Payment.Api.Controllers
             });
         }
 
-        protected ActionResult CustomResponseNotFound(object? result = null)
+        protected ActionResult CustomResponseNotFound()
         {
             return NotFound(new
             {
