@@ -1,17 +1,11 @@
 ﻿namespace Payment.Business.Helpers
 {
-    public class VerificationDigitHelper
-    {
-        private string _number;
+    public class VerificationDigitHelper(string number)
+    {   private string _number = number;
         private const int Module = 11;
         private readonly List<int> _multipliers = new List<int> { 2, 3, 4, 5, 6, 7, 8, 9 };
         private readonly IDictionary<int, string> _replacements = new Dictionary<int, string>();
-        private bool _moduleComplement = true;
-
-        public VerificationDigitHelper(string number)
-        {
-            _number = number;
-        }
+        private const bool ModuleComplement = true;
 
         public VerificationDigitHelper WithMultipliersFromTo(int firstMultiplier, int lastMultiplier)
         {
@@ -53,9 +47,9 @@
             }
 
             var mod = (sum % Module);
-            var result = _moduleComplement ? Module - mod : mod;
+            var result = ModuleComplement ? Module - mod : mod;
 
-            return _replacements.ContainsKey(result) ? _replacements[result] : result.ToString();
+            return _replacements.TryGetValue(result, out var replacement) ? replacement : result.ToString();
         }
     }
 }
