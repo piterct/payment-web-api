@@ -12,7 +12,7 @@ namespace Payment.Api.Attributes
                 return new ValidationResult(ErrorMessage ?? "Invalid GUID format.");
             }
 
-            string? guidString = value?.ToString();
+            var guidString = value?.ToString();
 
 
             if (!Guid.TryParse(guidString, out _) || Guid.Empty.ToString() == guidString)
