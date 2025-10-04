@@ -7,7 +7,6 @@ using Payment.Business.Interfaces.Notifications;
 using Payment.Business.Interfaces.Queries;
 using Payment.Business.Interfaces.Repositories;
 using Payment.Business.Interfaces.Services;
-using Payment.Business.Models;
 
 namespace Payment.Api.Controllers.V1
 {
