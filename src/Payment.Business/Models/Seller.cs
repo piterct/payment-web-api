@@ -19,7 +19,13 @@
             Phone = phone;
         }
 
-        public Seller() { }
+        public Seller()
+        {
+            Cpf = "";
+            Name = "";
+            Email = "";
+            Phone = "";
+        }
 
         public string Cpf { get; private set; }
         public string Name { get; private set; }

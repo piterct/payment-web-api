@@ -25,24 +25,20 @@ namespace Payment.Tests.Services.Order
             _orderId = Guid.NewGuid();
             _emptyListOrderItemDto = new List<OrderItemDto>();
             _emptySeller = new Business.Models.Seller();
-            _listOrderItem = new List<OrderItem>();
+            _listOrderItem = [];
         }
 
         [Fact(DisplayName = "Add new valid order")]
         [Trait("Category", "Order Services")]
-        public async void Order_NewValidOrder_MustCreateOrder()
+        public async Task Order_NewValidOrder_MustCreateOrder()
         {
             // Arrange
             var orderItem = new OrderItem("Bike");
             _listOrderItem.Add(orderItem);
-            var orderDto = new OrderDto(_orderId, EOrderStatus.Cancelled.ToString(), DateTime.Now, _emptyListOrderItemDto, _emptySeller);
-            _mocker.GetMock<IMapper>().Setup(m =>
-                m.Map<List<OrderItem>>(It.IsAny<List<OrderItemDto>>())).Returns(_listOrderItem);
-            _mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).ReturnsAsync(true);
-
+            var orderDto = new OrderDto(_orderId, nameof(EOrderStatus.Cancelled), DateTime.Now, _emptyListOrderItemDto, _emptySeller);
+            SetupMocks(orderDto, _listOrderItem, true);
             // Act
             var orderService = await _orderService.Add(orderDto);
-
             // Assert 
             Assert.NotEqual(orderService.OrderId, orderDto.OrderId);
             _mocker.GetMock<IOrderRepository>().Verify(s => s.Add(It.IsAny<Business.Models.Order>()), Times.Once());
@@ -51,12 +47,11 @@ namespace Payment.Tests.Services.Order
 
         [Fact(DisplayName = "Add new invalid order without items")]
         [Trait("Category", "Order Services")]
-        public async void Order_NewInvalidOrderWithoutItems_MustNotCreateOrder()
+        public async Task Order_NewInvalidOrderWithoutItems_MustNotCreateOrder()
         {
             // Arrange
-            var orderDto = new OrderDto(_orderId, EOrderStatus.Cancelled.ToString(), DateTime.Now, _emptyListOrderItemDto, _emptySeller);
-            _mocker.GetMock<IMapper>().Setup(m =>
-                m.Map<List<OrderItem>>(It.IsAny<List<OrderItemDto>>())).Returns(_listOrderItem);
+            var orderDto = new OrderDto(_orderId, nameof(EOrderStatus.Cancelled), DateTime.Now, _emptyListOrderItemDto, _emptySeller);
+            SetupMocks(orderDto, _listOrderItem, true);
 
             //Act
             var orderService = await _orderService.Add(orderDto);
@@ -65,6 +60,16 @@ namespace Payment.Tests.Services.Order
             Assert.NotEqual(orderService.OrderId, orderDto.OrderId);
             Assert.Equal(Guid.Empty, orderService.OrderId);
             _mocker.GetMock<IOrderRepository>().Verify(s => s.Add(It.IsAny<Business.Models.Order>()), Times.Never());
+        }
+
+        private void SetupMocks(OrderDto orderDto, List<OrderItem> orderItems, bool commitResult)
+        {
+            _mocker.GetMock<IMapper>()
+                .Setup(m => m.Map<List<OrderItem>>(It.IsAny<List<OrderItemDto>>()))
+                .Returns(orderItems);
+            _mocker.GetMock<IOrderRepository>()
+                .Setup(r => r.UnitOfWork.Commit())
+                .ReturnsAsync(commitResult);
         }
 
     }
