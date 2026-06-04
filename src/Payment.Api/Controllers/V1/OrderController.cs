@@ -61,7 +61,7 @@ namespace Payment.Api.Controllers.V1
             }
 
             var newOrder = await _orderService.Add(_mapper.Map<OrderDto>(orderRequest));
-            return CustomResponse(newOrder);
+            return CustomResponseCreated(newOrder);
         }
 
         [HttpPut("{id}/status/{orderStatus}")]

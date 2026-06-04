@@ -42,21 +42,21 @@ namespace Payment.Tests.Controllers.V1.Order
             var isValid = Validator.TryValidateObject(orderRequest, new ValidationContext(orderRequest), _validationResults, true);
 
             // Assert 
-            var statusCodeResult = Assert.IsType<OkObjectResult>(result);
+            var statusCodeResult = Assert.IsType<CreatedResult>(result);
             Assert.True(isValid);
-            Assert.Equal(200, statusCodeResult.StatusCode);
+            Assert.Equal(201, statusCodeResult.StatusCode);
             _mocker.GetMock<ISellerRepository>().Verify(s => s.GetById(It.IsAny<Guid>()), Times.Once());
             _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<OrderDto>()), Times.Once());
         }
 
         [Fact(DisplayName = "Add order seller not found ")]
         [Trait("Category", "Order Controllers")]
-        public async void AddOrder_SellerNotFound_MustReturnNotFound()
+        public async Task AddOrder_SellerNotFound_MustReturnNotFound()
         {
             // Arrange
             var orderRequest = new OrderRequest(_sellerId.ToString(), new List<OrderItemRequest>());
             _mocker.GetMock<INotifier>().Setup(n => n.GetNotifications())
-                .Returns(new List<Notification>() { new Notification("Seller not found") });
+                .Returns([new Notification("Seller not found")]);
 
             // Act
             var result = await _orderController.AddOrder(orderRequest);
@@ -69,5 +69,21 @@ namespace Payment.Tests.Controllers.V1.Order
             _mocker.GetMock<ISellerRepository>().Verify(s => s.GetById(It.IsAny<Guid>()), Times.Once());
             _mocker.GetMock<IOrderService>().Verify(s => s.Add(It.IsAny<OrderDto>()), Times.Never());
         }
+
+        [Fact]
+        public async Task AddOrder_ValidOrder_ReturnsCreatedResult()
+        {
+            // Arrange
+            var orderRequest = new OrderRequest(_sellerId.ToString(), new List<OrderItemRequest>());
+            _mocker.GetMock<ISellerRepository>().Setup(m => m.GetById(_sellerId)).ReturnsAsync(_seller);
+            
+            // Act
+            var result = await _orderController.AddOrder(orderRequest);
+
+            // Assert
+            var createdResult = Assert.IsType<CreatedResult>(result);
+            Assert.Equal(201, createdResult.StatusCode);
+        }
+
     }
 }

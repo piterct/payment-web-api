@@ -57,6 +57,23 @@ namespace Payment.Api.Controllers
                 erros = _notifier.GetNotifications().Select(n => n.Message)
             });
         }
+        
+        protected ActionResult CustomResponseCreated(object? result = null)
+        {
+            if (ValidOperation())
+            {
+                return Created(string.Empty, new
+                {
+                    success = true,
+                    data = result
+                });
+            }
+            return BadRequest(new
+            {
+                success = false,
+                erros = _notifier.GetNotifications().Select(n => n.Message)
+            });
+        }
 
         protected ActionResult CustomResponseNotFound()
         {
