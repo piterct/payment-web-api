@@ -5,18 +5,11 @@ using Payment.Business.Notifications;
 
 namespace Payment.Api.Controllers
 {
-    public class MainController : ControllerBase
+    public class MainController(INotifier notifier) : ControllerBase
     {
-        private readonly INotifier _notifier;
-
-        public MainController(INotifier notifier)
-        {
-            _notifier = notifier;
-        }
-
         protected bool ValidOperation()
         {
-            return !_notifier.HasNotification();
+            return !notifier.HasNotification();
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
@@ -37,7 +30,7 @@ namespace Payment.Api.Controllers
 
         protected void NotifyError(string message)
         {
-            _notifier.Handle(new Notification(message));
+            notifier.Handle(new Notification(message));
         }
 
         protected ActionResult CustomResponse(object? result = null)
@@ -54,7 +47,7 @@ namespace Payment.Api.Controllers
             return BadRequest(new
             {
                 success = false,
-                erros = _notifier.GetNotifications().Select(n => n.Message)
+                erros = notifier.GetNotifications().Select(n => n.Message)
             });
         }
         
@@ -71,7 +64,7 @@ namespace Payment.Api.Controllers
             return BadRequest(new
             {
                 success = false,
-                erros = _notifier.GetNotifications().Select(n => n.Message)
+                erros = notifier.GetNotifications().Select(n => n.Message)
             });
         }
 
@@ -80,7 +73,7 @@ namespace Payment.Api.Controllers
             return NotFound(new
             {
                 success = false,
-                erros = _notifier.GetNotifications().Select(n => n.Message)
+                erros = notifier.GetNotifications().Select(n => n.Message)
             });
         }
     }
