@@ -23,7 +23,7 @@ namespace Payment.Tests.Services.Order
             _mocker = new AutoMocker();
             _orderService = _mocker.CreateInstance<OrderService>();
             _orderId = Guid.NewGuid();
-            _emptyListOrderItemDto = new List<OrderItemDto>();
+            _emptyListOrderItemDto = [];
             _emptySeller = new Business.Models.Seller();
             _listOrderItem = [];
         }
