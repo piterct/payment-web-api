@@ -38,9 +38,9 @@ namespace Payment.Tests.Models
             var orderItem = new OrderItem("Product A");
             var initialOrderId = Guid.NewGuid();
             var newOrderId = Guid.NewGuid();
-            orderItem.AssociateOrder(initialOrderId);
-            
+
             // Act
+            orderItem.AssociateOrder(initialOrderId);
             orderItem.AssociateOrder(newOrderId);
             
             // Assert
