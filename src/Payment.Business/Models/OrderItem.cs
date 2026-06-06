@@ -7,11 +7,13 @@
             Name = name;
         }
 
-        public OrderItem() { }
-        public Guid OrderId { get; private set; }
-        public string Name { get; private set; }
+        public OrderItem()
+        { }
+        
+        public Guid OrderId { get; private set; } = Guid.NewGuid();
+        public string Name { get; private set; } = string.Empty;
 
-        public Order Order { get; private set; }
+        public Order Order { get; private set; } = new();
 
         public void AssociateOrder(Guid orderId)
         {
