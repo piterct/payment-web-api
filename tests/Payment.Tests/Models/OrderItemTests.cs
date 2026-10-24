@@ -4,17 +4,16 @@ namespace Payment.Tests.Models
 {
     public  class OrderItemTests
     {
+        private const string ProductA = "Product A";
+
         [Fact(DisplayName = "Create valid order item")]
         public void OrderItem_ValidData_ShouldCreateSuccessfully()
         {
-            // Arrange
-            const string name = "Product A";
-            
-            // Act
-            var orderItem = new OrderItem(name);
+            // Arrange & Act
+            var orderItem = new OrderItem(ProductA);
             
             // Assert
-            Assert.Equal(name, orderItem.Name);
+            Assert.Equal(ProductA, orderItem.Name);
         }
 
         [Fact(DisplayName = "Associate valid order")]
